@@ -24,7 +24,7 @@ export class UsersController implements OnModuleInit {
   private client: ClientKafka;
 
   async onModuleInit() {
-    const requestPatterns = ['find-all-user', "find-all-user-product", 'find-user', 'create-user'];
+    const requestPatterns = ['find-all-user', "find-all-user-product", 'find-user', 'create-user', 'update-user', 'delete-user', 'activate-user', 'inactivate-user'];
 
     requestPatterns.forEach(async pattern => {
       this.client.subscribeToResponseOf(pattern);

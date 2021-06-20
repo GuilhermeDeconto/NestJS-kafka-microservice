@@ -24,9 +24,9 @@ export class ProductController implements OnModuleInit {
   private client: ClientKafka;
 
   async onModuleInit() {
-    const requestPatters = ['find-all-product', 'find-product', 'create-product'];
+    const requestPatterns = ['find-all-product', 'find-product', 'create-product', 'update-product', 'delete-product', 'activate-product', 'inactivate-product'];
 
-    requestPatters.forEach(async pattern => {
+    requestPatterns.forEach(async pattern => {
       this.client.subscribeToResponseOf(pattern);
       await this.client.connect();
     });

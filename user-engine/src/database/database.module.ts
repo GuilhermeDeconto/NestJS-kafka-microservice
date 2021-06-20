@@ -1,16 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserEntity } from '../interfaces/user.entity';
+import { TypeOrmConf } from 'src/typeorm.config';
 
 @Module({
-  imports: [TypeOrmModule.forRoot({
-    type: 'postgres',
-    host: 'localhost',
-    username: 'postgres',
-    password: 'docker',
-    database: 'user',
-    entities: [UserEntity],
-    synchronize: true,
+  imports: [TypeOrmModule.forRootAsync({
+    useClass: TypeOrmConf
   }),]
 })
 export class DatabaseModule {}

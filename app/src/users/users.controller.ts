@@ -24,13 +24,13 @@ export class UsersController implements OnModuleInit {
   private client: ClientKafka;
 
   async onModuleInit() {
-    const requestPatters = ['find-all-user', 'find-user', 'create-user'];
+    const requestPatterns = ['find-all-user', "find-all-user-product", 'find-user', 'create-user'];
 
-    requestPatters.forEach(async pattern => {
+    requestPatterns.forEach(async pattern => {
       this.client.subscribeToResponseOf(pattern);
       await this.client.connect();
     });
-  }  
+  } 
 
   @Get()
   index(): Observable<User[]> {
@@ -40,6 +40,11 @@ export class UsersController implements OnModuleInit {
   @Get(':id')
   find(@Param('id') id: number): Observable<User> {
     return this.client.send('find-user', {id})
+  }
+
+  @Post(':id')
+  betweenMicroservices(): Observable<User[]> {
+    return this.client.send('find-all-user-product', {});
   }
 
   @Post()

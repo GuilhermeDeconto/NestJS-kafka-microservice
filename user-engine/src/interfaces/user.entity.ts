@@ -19,4 +19,6 @@ export class UserEntity extends BaseEntity {
 
   @Column({ default: 'ACTIVE' })
   status: 'ACTIVE' | 'INACTIVE';
+
+  test: any
 }

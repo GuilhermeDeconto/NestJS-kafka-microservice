@@ -5,7 +5,6 @@ import { UserEntity } from './interfaces/user.entity';
 import { User } from './interfaces/user.interface';
 
 @Controller()
-@Injectable()
 export class AppController implements OnModuleInit {
   // Inject kafka client
   constructor(private readonly appService: AppService, @Inject('KAFKA_SERVICE')private client: ClientKafka) {}

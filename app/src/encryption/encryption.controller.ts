@@ -1,4 +1,4 @@
-import { Body, Controller, Get, OnModuleInit, Post } from '@nestjs/common';
+import { Body, Controller, OnModuleInit, Post } from '@nestjs/common';
 import { Client, ClientKafka, Transport } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
 import { EncryptionDto } from './dtos/encryption.dto';

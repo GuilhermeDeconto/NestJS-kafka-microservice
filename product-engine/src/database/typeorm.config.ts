@@ -1,5 +1,5 @@
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from "@nestjs/typeorm";
-import { ProductEntity } from "./interfaces/product.entity";
+import { ProductEntity } from "src/interfaces/product.entity";
 
 export class TypeOrmConf implements TypeOrmOptionsFactory {
     createTypeOrmOptions(): TypeOrmModuleOptions {

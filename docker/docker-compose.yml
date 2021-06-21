@@ -1,7 +1,8 @@
 version: "3"
 services:
   zookeeper:
-    image: wurstmeister/zookeeper:latest
+    # image: wurstmeister/zookeeper:latest
+    image: zookeeper:latest
     ports:
       - "2181:2181"
   kafka:

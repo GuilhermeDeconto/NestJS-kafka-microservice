@@ -1,5 +1,5 @@
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from "@nestjs/typeorm";
-import { UserEntity } from "./interfaces/user.entity";
+import { UserEntity } from "../interfaces/user.entity";
 
 export class TypeOrmConf implements TypeOrmOptionsFactory {
     createTypeOrmOptions(): TypeOrmModuleOptions {

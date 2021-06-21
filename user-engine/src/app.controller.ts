@@ -1,6 +1,5 @@
 import { Controller, Inject, Injectable, Logger, OnModuleInit } from '@nestjs/common';
-import { Client, ClientKafka, MessagePattern, Payload, Transport } from '@nestjs/microservices';
-import { In } from 'typeorm';
+import { ClientKafka, MessagePattern, Payload } from '@nestjs/microservices';
 import { AppService } from './app.service';
 import { UserEntity } from './interfaces/user.entity';
 import { User } from './interfaces/user.interface';

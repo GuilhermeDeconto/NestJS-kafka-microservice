@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TypeOrmConf } from 'src/typeorm.config';
-import { ProductEntity } from '../interfaces/product.entity';
+import { TypeOrmConf } from 'src/database/typeorm.config';
 
 @Module({
   imports: [TypeOrmModule.forRootAsync({

@@ -1,31 +1,17 @@
-import { Body, Controller, Delete, Get, OnModuleInit, Param, Patch, Post, Put } from '@nestjs/common';
-import { Client, ClientKafka, Transport } from '@nestjs/microservices';
+import { Body, Controller, Delete, Get, Inject, OnModuleInit, Param, Patch, Post, Put, UseGuards } from '@nestjs/common';
+import { ClientKafka } from '@nestjs/microservices';
 import { ApiBody } from '@nestjs/swagger';
 import { Observable } from 'rxjs';
+import { AuthGuard } from 'src/guards/auth.guards';
 import { UserDto } from './dtos/user.dto';
 import { User } from './interfaces/user.interface';
 
 @Controller('users')
 export class UsersController implements OnModuleInit {
-  @Client({
-    transport: Transport.KAFKA,
-    options: {
-      client: {
-        clientId: 'user',
-        brokers: ['localhost:9092'],
-      },
-      consumer: {
-        groupId: 'user-consumer',
-        allowAutoTopicCreation: true
-      }
-    }
-  })
-
-  private client: ClientKafka;
+  constructor(@Inject('USER_SERVICE') private client: ClientKafka) {}
 
   async onModuleInit() {
-    const requestPatterns = ['find-all-user', "find-all-user-product", 'find-user', 'create-user', 'update-user', 'delete-user', 'activate-user', 'inactivate-user'];
-
+    const requestPatterns = ['find-all-user', 'find-user', 'create-user', 'update-user', 'delete-user', 'activate-user', 'inactivate-user'];
     requestPatterns.forEach(async pattern => {
       this.client.subscribeToResponseOf(pattern);
       await this.client.connect();
@@ -33,18 +19,15 @@ export class UsersController implements OnModuleInit {
   } 
 
   @Get()
+  @UseGuards(AuthGuard)
   index(): Observable<User[]> {
     return this.client.send('find-all-user', {});
   }
 
   @Get(':id')
+  @UseGuards(AuthGuard)
   find(@Param('id') id: number): Observable<User> {
     return this.client.send('find-user', {id})
-  }
-
-  @Post(':id')
-  betweenMicroservices(): Observable<User[]> {
-    return this.client.send('find-all-user-product', {});
   }
 
   @Post()
@@ -54,6 +37,7 @@ export class UsersController implements OnModuleInit {
   }
 
   @Put(':id')
+  @UseGuards(AuthGuard)
   @ApiBody({ type: UserDto })
   update(@Param('id') id: number, @Body() { name, email, phone, password }: UserDto) {
     const payload = {
@@ -68,16 +52,19 @@ export class UsersController implements OnModuleInit {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard)
   remove(@Param('id') id: number) {
     return this.client.emit('delete-user', {id})
   }
 
   @Patch(':id/activate')
+  @UseGuards(AuthGuard)
   activate(@Param('id') id: number) {
     return this.client.emit('activate-user', {id});
   }
 
   @Patch(':id/inactivate')
+  @UseGuards(AuthGuard)
   inactivate(@Param('id') id: number) {
     return this.client.emit('inactivate-user', {id});
   }

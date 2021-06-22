@@ -1,4 +1,4 @@
-import { Controller, Inject, Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import { Controller, Inject, Logger, OnModuleInit } from '@nestjs/common';
 import { ClientKafka, MessagePattern, Payload } from '@nestjs/microservices';
 import { AppService } from './app.service';
 import { UserEntity } from './interfaces/user.entity';
@@ -24,28 +24,18 @@ export class AppController implements OnModuleInit {
     return await this.appService.findAll();;
   }
 
-  // Example of communication between microservices
-  @MessagePattern('find-all-user-product')
-  async communicate(): Promise<UserEntity[]> {
-    var array = await this.appService.findAll();
-    try {
-      // Send message to another microservice and wait for response
-      array[0].test = await this.client.send('find-all-product', {}).toPromise();
-    }catch(error){
-      this.logger.error(error);
-    }
-    return array;
-  }
-
   @MessagePattern('find-user')
   async find(@Payload() data: any): Promise<User> {
     return await this.appService.find(Number(data.value.id));
   }
 
-  @MessagePattern('create-user')
-  async create(@Payload() data: any): Promise<UserEntity> {
-    this.logger.log(`User: ${JSON.stringify(data)}`);
+  @MessagePattern('find-user-email')
+  async findName(@Payload() data: any): Promise<User> {
+    return await this.appService.findEmail(String(data.value.email));
+  }
 
+  @MessagePattern('create-user')
+  async create(@Payload() data: any): Promise<User> {
     return await this.appService.create(data.value);
   }
 

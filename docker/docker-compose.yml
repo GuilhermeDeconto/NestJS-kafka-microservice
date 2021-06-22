@@ -3,10 +3,12 @@ services:
   zookeeper:
     # image: wurstmeister/zookeeper:latest
     image: zookeeper:latest
+    restart: always
     ports:
       - "2181:2181"
   kafka:
     image: wurstmeister/kafka:latest
+    restart: always
     ports:
       - "9092:9092"
     environment:

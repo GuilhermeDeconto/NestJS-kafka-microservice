@@ -12,14 +12,14 @@ export class AppService {
     return await this.userRepository.find({ where: { status: 'ACTIVE' }});
   }
 
-  async find(userId: number): Promise<User> {
-    const {id, name,email, password, phone, status } = await this.userRepository.findOne(userId);
+  async findEmail(userEmail: string): Promise<User> {
+    const {id, name,email, password, phone, status } = await this.userRepository.findOne({where: {email: userEmail}});
     
     if(!id) {
       throw new Error();
     }
     
-    const response: User = {
+    const response = {
       id,
       name,
       email,
@@ -31,8 +31,34 @@ export class AppService {
     return response;
   }
 
-  async create(user: User): Promise<UserEntity> {
-    return await this.userRepository.save(user);
+  async find(userId: number): Promise<User> {
+    const {id, name,email, password, phone, status } = await this.userRepository.findOne(userId);
+    
+    if(!id) {
+      throw new Error();
+    }
+    
+    const response = {
+      id,
+      name,
+      email,
+      phone,
+      password,
+      status,
+    };
+
+    return response;
+  }
+
+  async create(user: User): Promise<User> {
+    const userEntity = this.userRepository.create(user);
+    const userFinal =  await this.userRepository.save(userEntity);
+    return {
+      id: userFinal.id,
+      name: userFinal.name,
+      email: userFinal.email,
+      phone: userFinal.phone
+    };
   }
 
   async update(userData: UserEntity): Promise<void> {

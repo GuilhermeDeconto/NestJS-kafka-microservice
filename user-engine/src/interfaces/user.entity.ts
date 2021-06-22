@@ -1,6 +1,9 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, BeforeInsert, Column, Entity, Exclusion, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { hash } from "bcrypt";
 
 @Entity()
+@Unique(['phone'])
+@Unique(['email'])
 export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -20,5 +23,8 @@ export class UserEntity extends BaseEntity {
   @Column({ default: 'ACTIVE' })
   status: 'ACTIVE' | 'INACTIVE';
 
-  test: any
+  @BeforeInsert()
+  async hashPassword() {
+    this.password = await hash(this.password, 10);
+  }
 }

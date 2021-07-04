@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: product-engine
+  name: product-engine
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: product-engine
+  template:
+    metadata:
+      labels:
+        app: product-engine
+    spec:
+      containers:
+        - env:
+            - name: BROKER
+              value: kafka-cluster:9092
+            - name: POSTGRES_HOST
+              value: postgres
+            - name: POSTGRES_PORT
+              value: "5432"
+          image: product-engine
+          imagePullPolicy: IfNotPresent
+          name: product-engine
+      restartPolicy: Always

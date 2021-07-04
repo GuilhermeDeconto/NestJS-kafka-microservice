@@ -11,7 +11,7 @@ import { AuthenticationController } from "./authentication.controller";
           options: {
             client: {
               clientId: 'authentication',
-              brokers: ['localhost:9092'],
+              brokers: [`${process.env.BROKER || 'localhost:9092'}`],
             },
             consumer: {
               groupId: 'authentication-consumer'

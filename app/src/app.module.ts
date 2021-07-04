@@ -16,7 +16,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         options: {
           client: {
             clientId: 'authentication',
-            brokers: ['localhost:9092'],
+            brokers: [`${process.env.BROKER || 'localhost:9092'}`],
           },
           consumer: {
             groupId: 'authentication-consumer'
@@ -38,7 +38,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
       options: {
         client: {
           clientId: 'authentication',
-          brokers: ['localhost:9092'],
+          brokers: [`${process.env.BROKER || 'localhost:9092'}`],
         },
         consumer: {
           groupId: 'authentication-consumer'

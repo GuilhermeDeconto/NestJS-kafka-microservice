@@ -1,0 +1,35 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: userdb
+spec:
+  ttlSecondsAfterFinished: 10
+  template:
+    spec:
+      containers:
+      - name: userdb
+        image: postgres:latest
+        command: ["createdb"]
+        args: ["-h","postgres", "-U", "postgres", "-w", "user"]
+        env:
+          - name: PGPASSWORD
+            value: docker
+      restartPolicy: Never
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: productdb
+spec:
+  ttlSecondsAfterFinished: 10
+  template:
+    spec:
+      containers:
+      - name: productdb
+        image: postgres:latest
+        command: ["createdb"]
+        args: ["-h","postgres", "-U", "postgres", "-w", "product"]
+        env:
+          - name: PGPASSWORD
+            value: docker
+      restartPolicy: Never

@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: kafka-cluster
+  name: kafka-cluster
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-cluster
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: kafka-cluster
+    spec:
+      containers:
+        - env:
+            - name: KAFKA_ADVERTISED_HOST_NAME
+              value: kafka-cluster
+            - name: KAFKA_ADVERTISED_PORT
+              value: "9092"
+            - name: KAFKA_CREATE_TOPICS
+              value: create-user:1:1, find-all-user:1:1 #testing topics
+            - name: KAFKA_PORT
+              value: "9092"
+            - name: KAFKA_ZOOKEEPER_CONNECT
+              value: zookeeper:2181
+          image: wurstmeister/kafka:latest
+          name: kafka-cluster
+          ports:
+            - containerPort: 9092
+          volumeMounts:
+            - mountPath: /var/run/docker.sock
+              name: kafka-cluster-hostpath0
+      restartPolicy: Always
+      volumes:
+        - hostPath:
+            path: /var/run/docker.sock
+          name: kafka-cluster-hostpath0
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: kafka-cluster
+  name: kafka-cluster
+spec:
+  ports:
+    - name: kafka-cluster
+      port: 9092
+      targetPort: 9092
+  selector:
+    app: kafka-cluster

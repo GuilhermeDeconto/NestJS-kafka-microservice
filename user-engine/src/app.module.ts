@@ -14,7 +14,7 @@ import { UserEntity } from './interfaces/user.entity';
       options: {
         client: {
           clientId: 'product',
-          brokers: ['localhost:9092'],
+          brokers: [`${process.env.BROKER || 'localhost:9092'}`],
         },
         consumer: {
           groupId: 'product-consumer-user-microservice'

@@ -5,8 +5,8 @@ export class TypeOrmConf implements TypeOrmOptionsFactory {
     createTypeOrmOptions(): TypeOrmModuleOptions {
         return {
             type: 'postgres',
-            host: 'localhost',
-            port: 5432,
+            host: `${process.env.POSTGRES_HOST || 'localhost'}`,
+            port: Number(process.env.POSTGRES_PORT) || 5432,
             username: 'postgres',
             password: 'docker',
             database: 'user',

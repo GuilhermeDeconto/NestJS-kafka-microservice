@@ -12,7 +12,7 @@ export class ProductController implements OnModuleInit {
     options: {
       client: {
         clientId: 'product',
-        brokers: ['localhost:9092'],
+        brokers: [`${process.env.BROKER || 'localhost:9092'}`],
       },
       consumer: {
         groupId: 'product-consumer',

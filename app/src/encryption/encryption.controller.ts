@@ -11,7 +11,7 @@ export class EncryptionController implements OnModuleInit {
     options: {
       client: {
         clientId: 'encryption',
-        brokers: ['localhost:9092'],
+        brokers: [`${process.env.BROKER || 'localhost:9092'}`],
       },
       consumer: {
         groupId: 'encryption-consumer',

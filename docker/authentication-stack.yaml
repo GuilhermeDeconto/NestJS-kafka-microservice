@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: authentication-engine
+  name: authentication-engine
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: authentication-engine
+  template:
+    metadata:
+      labels:
+        app: authentication-engine
+    spec:
+      containers:
+        - env:
+            - name: BROKER
+              value: kafka-cluster:9092
+          image: authentication-engine
+          imagePullPolicy: IfNotPresent
+          name: authentication-engine
+      restartPolicy: Always

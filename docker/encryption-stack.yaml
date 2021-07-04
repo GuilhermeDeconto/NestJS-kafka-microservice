@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: encryption-engine
+  name: encryption-engine
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: encryption-engine
+  template:
+    metadata:
+      labels:
+        app: encryption-engine
+    spec:
+      containers:
+        - env:
+            - name: BROKER
+              value: kafka-cluster:9092
+          image: encryption-engine
+          imagePullPolicy: IfNotPresent
+          name: encryption-engine
+      restartPolicy: Always

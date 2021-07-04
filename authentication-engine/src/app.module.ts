@@ -13,7 +13,7 @@ import { JwtStrategy } from './auth/jwt.strategy';
       options: {
         client: {
           clientId: 'user',
-          brokers: ['localhost:9092'],
+          brokers: [`${process.env.BROKER || 'localhost:9092'}`],
         },
         consumer: {
           groupId: 'user-consumer-authentication-microservice'

@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: app
+  name: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+        - env:
+            - name: BROKER
+              value: kafka-cluster:9092
+            - name: SERVER_PORT
+              value: "8000"
+          image: app
+          imagePullPolicy: IfNotPresent
+          name: app
+          ports:
+            - containerPort: 8000
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: app
+  name: app
+spec:
+  type: LoadBalancer
+  ports:
+    - name: app
+      protocol: TCP
+      port: 8080
+      targetPort: 8000
+  selector:
+    app: app

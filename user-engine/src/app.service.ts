@@ -31,7 +31,7 @@ export class AppService {
     return response;
   }
 
-  async find(userId: number): Promise<User> {
+  async find(userId: string): Promise<User> {
     const {id, name,email, password, phone, status } = await this.userRepository.findOne(userId);
     
     if(!id) {
@@ -50,15 +50,19 @@ export class AppService {
     return response;
   }
 
-  async create(user: User): Promise<User> {
+  async create(user: User): Promise<any> {
     const userEntity = this.userRepository.create(user);
-    const userFinal =  await this.userRepository.save(userEntity);
-    return {
-      id: userFinal.id,
-      name: userFinal.name,
-      email: userFinal.email,
-      phone: userFinal.phone
-    };
+    try {
+      const userFinal =  await this.userRepository.save(userEntity);
+      return {
+        id: userFinal.id,
+        name: userFinal.name,
+        email: userFinal.email,
+        phone: userFinal.phone
+      };
+    } catch (error) {
+        return { error: error.detail }
+    } 
   }
 
   async update(userData: UserEntity): Promise<void> {
@@ -73,15 +77,15 @@ export class AppService {
     await this.userRepository.save(user);
   }
 
-  async delete(id: number): Promise<void> {
+  async delete(id: string): Promise<void> {
     await this.userRepository.delete({id});
   }
 
-  async activate(id: number): Promise<void> {
+  async activate(id: string): Promise<void> {
     await this.userRepository.update(id, { status: 'ACTIVE' });
   }
 
-  async inactivate(id: number): Promise<void> {
+  async inactivate(id: string): Promise<void> {
     await this.userRepository.update(id, { status: 'INACTIVE' });
   }
 }

@@ -26,7 +26,7 @@ export class AppController implements OnModuleInit {
 
   @MessagePattern('find-user')
   async find(@Payload() data: any): Promise<User> {
-    return await this.appService.find(Number(data.value.id));
+    return await this.appService.find(String(data.value.id));
   }
 
   @MessagePattern('find-user-email')
@@ -48,16 +48,16 @@ export class AppController implements OnModuleInit {
 
   @MessagePattern('delete-user')
   async remove(@Payload() data: any): Promise<void> {
-    return this.appService.delete(Number(data.value.id));
+    return this.appService.delete(String(data.value.id));
   }
 
   @MessagePattern('activate-user')
   async activate(@Payload() data: any): Promise<void> {
-    return this.appService.activate(Number(data.value.id));
+    return this.appService.activate(String(data.value.id));
   }
 
   @MessagePattern('inactivate-user')
   async inactivate(@Payload() data: any): Promise<void> {
-    return this.appService.inactivate(Number(data.value.id));
+    return this.appService.inactivate(String(data.value.id));
   }
 }

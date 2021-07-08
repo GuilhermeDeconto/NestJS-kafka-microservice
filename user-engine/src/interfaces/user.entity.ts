@@ -5,8 +5,9 @@ import { hash } from "bcrypt";
 @Unique(['phone'])
 @Unique(['email'])
 export class UserEntity extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   name: string;

@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, Inject, OnModuleInit, Param, Patch, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Inject, OnModuleInit, Param, Patch, Post, Put, UseGuards } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { ApiBody } from '@nestjs/swagger';
 import { Observable } from 'rxjs';
+import { tap, timeout } from 'rxjs/operators';
 import { AuthGuard } from 'src/guards/auth.guards';
 import { UserDto } from './dtos/user.dto';
 import { User } from './interfaces/user.interface';
@@ -33,7 +34,11 @@ export class UsersController implements OnModuleInit {
   @Post()
   @ApiBody({ type: UserDto })
   create(@Body() user: UserDto): Observable<User> {
-    return this.client.send('create-user', user);
+    return this.client.send('create-user', user).pipe(tap(item => {
+      if(item.error){
+        throw new HttpException(item.error.toString(),HttpStatus.BAD_REQUEST);
+    }
+  }), timeout(10000));
   }
 
   @Put(':id')

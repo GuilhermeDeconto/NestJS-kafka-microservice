@@ -53,15 +53,15 @@ $ yarn run test:cov
 ## Installation
 
 ```bash
-$ docker build -f user-engine/Dockerfile . -t user-engine
+$ cd user-engine && docker build -f ./Dockerfile . -t user-engine
 
-$ docker build -f authentication-engine/Dockerfile . -t authentication-engine
+$ cd authentication-engine && docker build -f ./Dockerfile . -t authentication-engine
 
-$ docker build -f encryption-engine/Dockerfile . -t encryption-engine
+$ cd encryption-engine && docker build -f ./Dockerfile . -t encryption-engine
 
-$ docker build -f product-engine/Dockerfile . -t product-engine
+$ cd product-engine && docker build -f ./Dockerfile . -t product-engine
 
-$ docker build -f app/Dockerfile . -t app
+$ cd app && docker build -f ./Dockerfile . -t app
 
 $ cd docker/
 

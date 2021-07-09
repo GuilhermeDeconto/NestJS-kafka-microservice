@@ -35,8 +35,8 @@ export class UsersController implements OnModuleInit {
   @ApiBody({ type: UserDto })
   create(@Body() user: UserDto): Observable<User> {
     return this.client.send('create-user', user).pipe(tap(item => {
-      if(item.error){
-        throw new HttpException(item.error.toString(),HttpStatus.BAD_REQUEST);
+      if(item.code){
+        throw new HttpException(item.message.toString(), item.code);
     }
   }), timeout(10000));
   }

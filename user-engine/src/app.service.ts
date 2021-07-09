@@ -61,7 +61,7 @@ export class AppService {
         phone: userFinal.phone
       };
     } catch (error) {
-        return { error: error.detail }
+        return { message: error.detail, code: 400 }
     } 
   }
 
